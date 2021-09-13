@@ -33,7 +33,8 @@ addBtn.addEventListener("click", function(e) {
 
   localStorage.setItem("notes", JSON.stringify(notesObj));
 
-  addTxt.value = "";
+  addTitle.value = "";
+  addDescription.value = "";
 
 //   console.log(notesObj);
 
