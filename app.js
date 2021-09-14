@@ -1,4 +1,4 @@
-console.log("Welcome to Magic Notes | version 2.01. This is created by Vedansh Yadav");
+console.log("Welcome to Magic Notes. This is created by Vedansh Yadav");
 
 showNotes();
 
@@ -6,27 +6,22 @@ showNotes();
 
 let addBtn = document.getElementById("addBtn");
 
-addBtn.addEventListener("click", function(e) {
-  
+addBtn.addEventListener("click", function (e) {
   let addTitle = document.getElementById("addTitle");
 
   let addDescription = document.getElementById("addDescription");
 
   let notes = localStorage.getItem("notes");
-  
+
   let Note = {
-    title : addTitle.value,
-    description : addDescription.value
-  }
+    title: addTitle.value,
+    description: addDescription.value
+  };
 
   if (notes == null) {
-
     notesObj = new Array();
-
   } else {
-
     notesObj = JSON.parse(notes);
-
   }
 
   notesObj.push(Note);
@@ -36,34 +31,25 @@ addBtn.addEventListener("click", function(e) {
   addTitle.value = "";
   addDescription.value = "";
 
-//   console.log(notesObj);
+  //   console.log(notesObj);
 
   showNotes();
-
 });
-
-
 
 // Function to show elements from localStorage
 
 function showNotes() {
-
   let notes = localStorage.getItem("notes");
 
   if (notes == null) {
-
     notesObj = new Array();
-
   } else {
-
     notesObj = JSON.parse(notes);
-
   }
 
   let html = "";
 
-  notesObj.forEach(function(element, index) {
-
+  notesObj.forEach(function (element, index) {
     html += `
 
             <div class="noteCard my-2 mx-2 card col s4 m4" style="width: 18rem; margin-left: 10px; padding: 20px;">
@@ -78,110 +64,103 @@ function showNotes() {
 
 						<hr>
 
-                        <button id="${index}"onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
-
+<button class="waves-effect waves-light btn modal-trigger" onclick="showModal(${index})">Edit Note</button>
+<button id="${index}"onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
+                      
                     </div>
 
                 </div>`;
-
   });
 
   let notesElm = document.getElementById("notes");
 
   if (notesObj.length != 0) {
-
     notesElm.innerHTML = html;
-
   } else {
-
     notesElm.innerHTML = `Nothing to show! Use "Add a Note" section above to add notes.`;
-
   }
-
 }
 
+// Function to show Modal
+function showModal(index) {
+  document.getElementById("modal1").style.display = "block";
+  document.getElementById("index").innerHTML = index;
+}
 
+// Function to Edit a note
+function editNote() {
+  var index = document.getElementById("index").innerHTML;
+
+  let notes = localStorage.getItem("notes");
+  let newTitle = document.getElementById("newTitle");
+  let newDescription = document.getElementById("newDescription");
+
+  if (notes == null) {
+    notesObj = new Array();
+  } else {
+    notesObj = JSON.parse(notes);
+  }
+
+  notesObj[index].title = newTitle.value;
+  notesObj[index].description = newDescription.value;
+
+  localStorage.setItem("notes", JSON.stringify(notesObj));
+
+  showNotes();
+
+  document.getElementById("modal1").style.display = "none";
+}
 
 // Function to delete a note
 
 function deleteNote(index) {
-
-//   console.log("I am deleting", index);
-
-
+  //   console.log("I am deleting", index);
 
   let notes = localStorage.getItem("notes");
 
   if (notes == null) {
-
     notesObj = new Array();
-
   } else {
-
     notesObj = JSON.parse(notes);
-
   }
-
-
 
   notesObj.splice(index, 1);
 
   localStorage.setItem("notes", JSON.stringify(notesObj));
 
   showNotes();
-
 }
 
+let search = document.getElementById("searchTxt");
 
+search.addEventListener("input", function () {
+  let inputVal = search.value;
 
+  // console.log('Input event fired!', inputVal);
 
+  let noteCards = document.getElementsByClassName("noteCard");
 
-let search = document.getElementById('searchTxt');
+  Array.from(noteCards).forEach(function (element) {
+    let cardTxt = element.getElementsByTagName("p")[0].innerText;
 
-search.addEventListener("input", function(){
+    if (cardTxt.includes(inputVal)) {
+      element.style.display = "block";
+    } else {
+      element.style.display = "none";
+    }
 
-
-
-    let inputVal = search.value;
-
-    // console.log('Input event fired!', inputVal);
-
-    let noteCards = document.getElementsByClassName('noteCard');
-
-    Array.from(noteCards).forEach(function(element){
-
-        let cardTxt = element.getElementsByTagName("p")[0].innerText;
-
-        if(cardTxt.includes(inputVal)){
-
-            element.style.display = "block";
-
-        }
-
-        else{
-
-            element.style.display = "none";
-
-        }
-
-        // console.log(cardTxt);
-
-    })
-
-})
-
-
+    // console.log(cardTxt);
+  });
+});
 
 /*
 
 Further Features:
 
-1. Add Title
+1. Mark a note as Important
 
-2. Mark a note as Important
+2. Separate notes by user
 
-3. Separate notes by user
+3. Sync and host to web server 
 
-4. Sync and host to web server 
-
-*/ 
+*/
