@@ -11,29 +11,33 @@ addBtn.addEventListener("click", function (e) {
 
   let addDescription = document.getElementById("addDescription");
 
-  let notes = localStorage.getItem("notes");
-
-  let Note = {
-    title: addTitle.value,
-    description: addDescription.value
-  };
-
-  if (notes == null) {
-    notesObj = new Array();
+  if (addTitle.value === "" || addDescription.value === "") {
+    alert("Your Note is Empty Please Type something");
   } else {
-    notesObj = JSON.parse(notes);
+    let notes = localStorage.getItem("notes");
+
+    let Note = {
+      title: addTitle.value,
+      description: addDescription.value
+    };
+
+    if (notes == null) {
+      notesObj = new Array();
+    } else {
+      notesObj = JSON.parse(notes);
+    }
+
+    notesObj.push(Note);
+
+    localStorage.setItem("notes", JSON.stringify(notesObj));
+
+    addTitle.value = "";
+    addDescription.value = "";
+
+    //   console.log(notesObj);
+
+    showNotes();
   }
-
-  notesObj.push(Note);
-
-  localStorage.setItem("notes", JSON.stringify(notesObj));
-
-  addTitle.value = "";
-  addDescription.value = "";
-
-  //   console.log(notesObj);
-
-  showNotes();
 });
 
 // Function to show elements from localStorage
@@ -87,6 +91,13 @@ function showModal(index) {
   document.getElementById("index").innerHTML = index;
 }
 
+// Function to close Modal
+function closeModal() {
+  document.getElementById("newTitle").value = "";
+  document.getElementById("newDescription").value = "";
+  document.getElementById("modal1").style.display = "none";
+}
+
 // Function to Edit a note
 function editNote() {
   var index = document.getElementById("index").innerHTML;
@@ -95,20 +106,27 @@ function editNote() {
   let newTitle = document.getElementById("newTitle");
   let newDescription = document.getElementById("newDescription");
 
-  if (notes == null) {
-    notesObj = new Array();
+  if (newTitle.value === "" || newDescription.value === "") {
+    alert("Values are Empty Please Fill them to edit a Note");
   } else {
-    notesObj = JSON.parse(notes);
+    if (notes == null) {
+      notesObj = new Array();
+    } else {
+      notesObj = JSON.parse(notes);
+    }
+
+    notesObj[index].title = newTitle.value;
+    notesObj[index].description = newDescription.value;
+
+    localStorage.setItem("notes", JSON.stringify(notesObj));
+
+    newTitle.value = "";
+    newDescription.value = "";
+
+    showNotes();
+
+    document.getElementById("modal1").style.display = "none";
   }
-
-  notesObj[index].title = newTitle.value;
-  notesObj[index].description = newDescription.value;
-
-  localStorage.setItem("notes", JSON.stringify(notesObj));
-
-  showNotes();
-
-  document.getElementById("modal1").style.display = "none";
 }
 
 // Function to delete a note
