@@ -1,4 +1,4 @@
-console.log("Welcome to Magic Notes | version 1.01. This is created by Vedansh Yadav");
+console.log("Welcome to Magic Notes | version 2.01. This is created by Vedansh Yadav");
 
 showNotes();
 
