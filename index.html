@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Notes App</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"></head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
 <style>
 .row:not(:last-child){
 	margin-right: 10px;
@@ -23,6 +24,29 @@
     </div>
   </nav>
    
+   <!-- Modal Structure -->
+  <div id="modal1" class="modal modal-fixed-footer" style="z-index: 999;">
+    <div class="modal-content">
+      <div class="form-group">
+        <h3>Edit Your Note</h3> 
+        <span id="index" style="display: none;"></span>
+        <div class="row">
+            <div class="input-field col s12">
+              <input id="newTitle" type="text" class="validate">
+              <label for="newTitle">Edit the Title of your Note</label>
+            </div>
+            <div class="input-field col s12">
+              <input id="newDescription" type="text" class="validate">
+              <label for="newDescription">Edit the Description of your Note</label>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-close waves-effect waves-green btn-flat" onclick="closeModal()">Cancel</button>
+      <button class="modal-close waves-effect waves-green btn-flat" onclick="editNote()">Edit</button>
+    </div>
+  </div>
    
   <div class="container my-3">
         <h1>Welcome To Magic Notes</h1>
