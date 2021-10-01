@@ -1,7 +1,6 @@
 console.log("Welcome to Magic Notes. This is created by Vedansh Yadav");
 
 showNotes();
-
 // If user adds a note, add it to the localStorage
 
 let addBtn = document.getElementById("addBtn");
@@ -11,7 +10,7 @@ addBtn.addEventListener("click", function (e) {
 
   let addDescription = document.getElementById("addDescription");
 
-  if (addTitle.value === "" || addDescription.value === "") {
+  if (addTitle.value == "" || addDescription.value == "") {
     alert("Your Note is Empty Please Type something");
   } else {
     let notes = localStorage.getItem("notes");
@@ -51,12 +50,35 @@ function showNotes() {
     notesObj = JSON.parse(notes);
   }
 
+let ImportantNotes = localStorage.getItem("ImportantNotes");
+
+  if (ImportantNotes == null) {
+    ImportantNotesObj = new Array();
+  } else {
+    ImportantNotesObj = JSON.parse(ImportantNotes);
+  }
+
+  var ImportantMarkingButton = document.getElementById(
+    "ImportantMarkingButton"
+  );
   let html = "";
 
   notesObj.forEach(function (element, index) {
+	 if (ImportantNotesObj.includes(index)) {
+     var style = "background : yellow;";
+     ImportantStatus = true;
+    }else {
+      ImportantStatus = false;
+    }
+    if (ImportantStatus == true) {
+      var buttonTxt = "Delete Important mark";
+    } else {
+      var buttonTxt = "Mark As Important";
+    }
+
     html += `
 
-            <div class="noteCard my-2 mx-2 card col s4 m4" style="width: 18rem; margin-left: 10px; padding: 20px;">
+            <div class="noteCard my-2 mx-2 card col s4 m4" style="width: 18rem; margin-left: 10px; padding: 20px; ${style}">
 
                     <div class="card-body">
 
@@ -69,8 +91,7 @@ function showNotes() {
 						<hr>
 
 <button class="waves-effect waves-light btn modal-trigger" onclick="showModal(${index})">Edit Note</button>
-<button id="${index}"onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
-                      
+<button id="${index}"onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button><button id="ImportantMarkingButton" onclick="markNoteAsImportant(${index})" class="btn btn-primary">${buttonTxt}</button>                 
                     </div>
 
                 </div>`;
@@ -85,7 +106,28 @@ function showNotes() {
   }
 }
 
-// Function to show Modal
+// Function to Mark or Delete a Note as Important
+function markNoteAsImportant(index,calledByAnotherFunction) {
+  let ImportantNotes = localStorage.getItem("ImportantNotes");
+
+  if (ImportantNotes == null) {
+    ImportantNotesObj = new Array();
+  } else {
+    ImportantNotesObj = JSON.parse(ImportantNotes);
+  }
+
+  if (!(ImportantNotesObj.includes(index)) && calledByAnotherFunction == undefined){
+    ImportantNotesObj.push(index);
+  } else {
+    ImportantNotesObj.splice(ImportantNotesObj.indexOf(index), 1);
+  }
+  localStorage.setItem("ImportantNotes", JSON.stringify(ImportantNotesObj)); 
+
+  showNotes();
+}
+
+
+// Function to show Modal where you can edit your Note
 function showModal(index) {
   document.getElementById("modal1").style.display = "block";
   document.getElementById("index").innerHTML = index;
@@ -106,7 +148,7 @@ function editNote() {
   let newTitle = document.getElementById("newTitle");
   let newDescription = document.getElementById("newDescription");
 
-  if (newTitle.value === "" || newDescription.value === "") {
+  if (newTitle.value === "" && newDescription.value === "") {
     alert("Values are Empty Please Fill them to edit a Note");
   } else {
     if (notes == null) {
@@ -115,9 +157,15 @@ function editNote() {
       notesObj = JSON.parse(notes);
     }
 
+	if(newTitle.value === ""){
+		notesObj[index].description = newDescription.value;
+	}else if(newDescription.value === ""){
+		notesObj[index].title = newTitle.value;
+	}else{
     notesObj[index].title = newTitle.value;
     notesObj[index].description = newDescription.value;
-
+	}
+	
     localStorage.setItem("notes", JSON.stringify(notesObj));
 
     newTitle.value = "";
@@ -132,7 +180,7 @@ function editNote() {
 // Function to delete a note
 
 function deleteNote(index) {
-  //   console.log("I am deleting", index);
+  console.log("I am deleting", index);
 
   let notes = localStorage.getItem("notes");
 
@@ -145,7 +193,9 @@ function deleteNote(index) {
   notesObj.splice(index, 1);
 
   localStorage.setItem("notes", JSON.stringify(notesObj));
-
+  
+  markNoteAsImportant(index,true);
+  
   showNotes();
 }
 
@@ -166,16 +216,12 @@ search.addEventListener("input", function () {
     } else {
       element.style.display = "none";
     }
-
-    // console.log(cardTxt);
   });
 });
 
 /*
 
 Further Features:
-
-1. Mark a note as Important
 
 2. Separate notes by user
 
