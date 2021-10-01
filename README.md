@@ -33,7 +33,8 @@ Languages and Libraries
 
 - 4.) version 2.1 :- In this new update you get a new feature of Edit a Note using this feature you  can edit title or description or may both of any note you already created  |  (created using Materialize CSS and vanilla javascript)
 
-  
+- 5.) version 3.00 :- This is a big update where you get a new feature to mark a Note as Important and here You also get a new web application link button in the top-left of the website by clicking on that you will go to a new web application of this magic Notes creater (i.e. me) There you can create a To-Do-List of your today's work. and there are glitches in the previous versions those are Noticed by me and I removed those glitches.
+
 ## Feedback
 
 If rialize that there must be any new update in this web application so you can advice us or you can help us for that new update for this you can contact me with Whatsapp Number given below or You can mail me on my email address that is also gicen below
