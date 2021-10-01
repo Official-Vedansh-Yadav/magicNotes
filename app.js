@@ -32,7 +32,6 @@ addBtn.addEventListener("click", function (e) {
 
     addTitle.value = "";
     addDescription.value = "";
-
     //   console.log(notesObj);
 
     showNotes();
